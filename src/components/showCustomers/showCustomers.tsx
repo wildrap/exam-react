@@ -7,9 +7,26 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { apiCrudHooks } from "../../api-crud/apiCrudHooks";
 
-export const showCustomers = () => {
+export const ShowCustomers = () => {
+  const { retrieveCustomers, getCust } = apiCrudHooks();
+  const [rows, setRows] = useState([]);
+  retrieveCustomers();
+
+  useEffect(() => {
+    if (getCust) {
+      setRows(getCust);
+    }
+  }, [getCust]);
+
+  useEffect(() => {
+    if (rows) {
+      console.log(rows);
+    }
+  }, [rows]);
+
   return (
     <div>
       <h2>Add Customer</h2>
@@ -25,20 +42,12 @@ export const showCustomers = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-              </TableRow>
-            ))}
+            <h1>Test</h1>
           </TableBody>
         </Table>
       </TableContainer>
     </div>
   );
 };
+
+export default ShowCustomers;

@@ -1,6 +1,6 @@
-import { UsbOutlined } from "@material-ui/icons";
 import api from "../api/customers";
 import { v5 as uuidv5 } from "uuid";
+import { useState } from "react";
 
 export interface cust {
   firstName: string;
@@ -12,20 +12,23 @@ export interface cust {
 }
 
 export const apiCrudHooks = () => {
+  const [postCust, setPostCust] = useState(<any>[]);
+  const [getCust, setGetCust] = useState(<any>[]);
+
   const retrieveCustomers = async () => {
     const response = await api.get("/customers");
-    return response;
+    setGetCust(response);
   };
 
   const addCustomersHandler = async (customers: cust) => {
     const request = {
-      id: uuidv5(),
+      id: uuidv5("number", "number"),
       ...customers,
     };
 
     const response = await api.post("/customers", request);
-    // use response to store this in redux
+    setPostCust(response);
   };
 
-  return { retrieveCustomers, addCustomersHandler };
+  return { retrieveCustomers, addCustomersHandler, postCust, getCust };
 };
